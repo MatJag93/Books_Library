@@ -22,6 +22,7 @@ public class AppInitializer extends
                 new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         return new Filter[] { characterEncodingFilter };
+
     }
 }
 
