@@ -9,7 +9,7 @@ Application programming interface for cataloging books using the REST method
 - Removal a selected book 
 
 ## Technologies used
-- Spring MVC(Framework, Data)
+- Spring MVC (Framework, Data)
 - Java 8
 - Jackson library
 - REST
