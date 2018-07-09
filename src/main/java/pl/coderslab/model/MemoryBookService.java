@@ -36,7 +36,8 @@ public class MemoryBookService {
         list.add(book);
     }
 
-    public void updateBook(Book book) {
-        list.set(book);
+    public void removeBook(Book book){
+        list.remove(book);
     }
+
 }

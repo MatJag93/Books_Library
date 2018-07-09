@@ -3,6 +3,7 @@ package pl.coderslab.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.model.Book;
+import pl.coderslab.model.JsonResponse;
 import pl.coderslab.model.MemoryBookService;
 
 import java.util.List;
@@ -41,5 +42,81 @@ public class BookController {
         memoryBookService.addBook(book);
         return book;
     }
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public JsonResponse create(@RequestBody Book book) {
+
+        long lastId = 0;
+        for (Book b : bookService.getList()) {
+            if (lastId < b.getId()) {
+                lastId = b.getId();
+            }
+        }
+        book.setId(++lastId);
+        bookService.add(book);
+        return new JsonResponse("created new book", book);
+    }
+//    @RequestMapping(value = "", method = RequestMethod.POST)
+//    public JsonResponse create(@RequestParam String isbn,
+//                               @RequestParam String name,
+//                               @RequestParam String author,
+//                               @RequestParam String publisher,
+//                               @RequestParam String type) {
+//
+//        long lastId = 0;
+//        for (Book b : bookService.getList()) {
+//            if (lastId < b.getId()) {
+//                lastId = b.getId();
+//            }
+//        }
+//        Book book = new Book(++lastId, isbn, name, author, publisher, type);
+//        bookService.add(book);
+//        return new JsonResponse("created new book", book);
+//    }
+
+
+//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+//    public JsonResponse update(@PathVariable Long id,
+//                               @RequestParam String isbn,
+//                               @RequestParam String name,
+//                               @RequestParam String author,
+//                               @RequestParam String publisher,
+//                               @RequestParam String type) {
+//        Book book = null;
+//        for (Book b : bookService.getList()){
+//            if (b.getId().equals(id)) {
+//                b.setIsbn(isbn);
+//                b.setAuthor(author);
+//                b.setPublisher(publisher);
+//                b.setTitle(name);
+//                b.setType(type);
+//                book = b;
+//            }
+//        }
+//        return new JsonResponse("updated book",book);
+//    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public JsonResponse update(@PathVariable Long id,
+                               @RequestBody Book book) {
+
+        for (Book b : bookService.getList()){
+            if (b.getId().equals(id)) {
+                b.setIsbn(book.getIsbn());
+                b.setAuthor(book.getAuthor());
+                b.setPublisher(book.getPublisher());
+                b.setTitle(book.getTitle());
+                b.setType(book.getType());
+                book = b;
+            }
+        }
+        return new JsonResponse("updated book",book);
+    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public JsonResponse create(@PathVariable Long id) {
+
+        bookService.remove(bookService.loadById(id));
+        return new JsonResponse("removed book id: "+id);
+    }
+}
 
 }
